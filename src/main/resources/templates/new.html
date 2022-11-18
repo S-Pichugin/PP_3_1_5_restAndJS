@@ -5,9 +5,9 @@
   <title>New</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/users}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
   <label for="name">Enter name:</label>
-  <input type="text" th:field="*{name}" id="name">
+  <input type="text" th:field="*{username}" id="name">
   <br/>
   <label for="Surname">Enter Surname:</label>
   <input type="text" th:field="*{surname}" id="Surname">
@@ -16,6 +16,10 @@
   <input type="text" th:field="*{email}" id="email">
   <br/>
   <input type="submit" value="Save">
+</form>
+<br/><br/><br/><br/>
+<form action="/logout">
+  <button>LOGOUT</button>
 </form>
 </body>
 </html>

@@ -17,21 +17,25 @@
       <th>Email</th>
     </tr>
     <tr th:each="user:${users}">
-      <td th:utext="${user.getName()}"></td>
+      <td th:utext="${user.getUsername()}"></td>
       <td th:utext="${user.getSurname()}"></td>
       <td th:utext="${user.getEmail()}"></td>
 
-      <td><form th:action="@{/{id}/edit(id=${user.getId()})}">
+      <td><form th:action="@{/admin/{id}/edit(id=${user.getId()})}">
         <button>Update</button>
       </form></td>
 
-      <td><form th:method="DELETE" th:action="@{/{id}/delete(id=${user.getId()})}">
+      <td><form th:method="DELETE" th:action="@{/admin/{id}/delete(id=${user.getId()})}">
         <input type="submit" value="Delete">
       </form></td>
     </tr>
   </table>
   <br/>
-  <a href="/new">Create new user</a>
+  <a href="/admin/new">Create new user</a>
 </div>
+<br/><br/><br/><br/>
+<form action="/logout">
+  <button>LOGOUT</button>
+</form>
 </body>
 </html>

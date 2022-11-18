@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UserSecurityService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    public UserSecurityService(UserRepository userRepository) {
+    public void setUserRepository (UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -32,9 +33,9 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
         if (user == null){
-            throw new UsernameNotFoundException(String.format("User not found!", username));
+            throw new UsernameNotFoundException(String.format("User '%s' not found!", username));
         }
-        return new org.springframework.security.core.userdetails.User(user.getName(),user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
     }
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){

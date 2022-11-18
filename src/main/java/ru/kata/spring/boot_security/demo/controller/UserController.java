@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.UserSecurityService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.security.Principal;
 
 
 @Controller
@@ -19,51 +23,64 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/")
+    private UserSecurityService userSecurityService;
+    @Autowired
+    public void setUserSecurityService(UserSecurityService userSecurityService){
+        this.userSecurityService = userSecurityService;
+    }
+
+    @GetMapping(value = "/user")
+    public String userPage (Principal principal, ModelMap model) {
+        User user = userSecurityService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
+        return "user";
+    }
+
+    @GetMapping(value = "/admin")
     public String print(ModelMap model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/admin/users")
     public String printUsers(ModelMap model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
-    @GetMapping(value = "/new")
+    @GetMapping(value = "/admin/new")
     public String newUser(ModelMap model) {
         model.addAttribute("user", new User());
         return "new";
     }
 
-    @PostMapping(value = "/users")
+    @PostMapping(value = "/admin/users")
     public String saveNewUser(@ModelAttribute("user") User user) {
         userService.save(user);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @GetMapping(value = "/{id}/edit")
+    @GetMapping(value = "/admin/{id}/edit")
     public String edit(ModelMap model, @PathVariable("id") int id) {
         model.addAttribute("user", userService.show(id));
         return "edit";
     }
 
-    @PostMapping(value = "/users/{id}")
+    @PostMapping(value = "/admin/users/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
         userService.update(id, user);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @PostMapping(value = "/{id}/delete")
+    @PostMapping(value = "/admin/{id}/delete")
     public String delete(@PathVariable("id") int id) {
         userService.delete(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/admin/delete")
     public String isExistById(@PathVariable User user) {
         userService.delete(Math.toIntExact(user.getId()));
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 }

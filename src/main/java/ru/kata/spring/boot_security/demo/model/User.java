@@ -18,7 +18,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    private String username;
+
     private String surname;
     private String email;
 
@@ -41,11 +42,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public String getSurname() {
@@ -90,7 +88,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     public void setPassword(String password) {
@@ -118,11 +116,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(email, user.email) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname);
+        return id == user.id && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(surname, user.surname);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, name, surname);
+        return Objects.hash(id, email, username, surname);
     }
 
 }
