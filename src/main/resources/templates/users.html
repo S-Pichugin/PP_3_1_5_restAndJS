@@ -15,11 +15,13 @@
       <th>Name</th>
       <th>Surname</th>
       <th>Email</th>
+      <th>Role</th>
     </tr>
     <tr th:each="user:${users}">
       <td th:utext="${user.getUsername()}"></td>
       <td th:utext="${user.getSurname()}"></td>
       <td th:utext="${user.getEmail()}"></td>
+      <td th:utext="${user.getRoles()}"></td>
 
       <td><form th:action="@{/admin/{id}/edit(id=${user.getId()})}">
         <button>Update</button>
