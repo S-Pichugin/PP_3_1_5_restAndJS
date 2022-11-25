@@ -1,12 +1,11 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserSecurityService;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -36,11 +35,29 @@ public class UserController {
         return "user";
     }
 
+//    @GetMapping
+//    public String getAllUsers(@ModelAttribute("user") User user, Model model, Authentication authentication) {
+//        model.addAttribute("users", userService.getAllUsers());
+//        model.addAttribute("principal", authentication);
+//        model.addAttribute("rolesList", user.getRoles());
+//        model.addAttribute("admin", userSecurityService.findByUsername(authentication.name()));
+//        return "admin/admin";
+//    }
+
     @GetMapping(value = "/admin")
-    public String print(ModelMap model) {
+    public String print(Principal principal,ModelMap model) {
+        User user = userSecurityService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
+
+//    @GetMapping(value = "/admin")
+//    public String printLoginUser(Principal principal,ModelMap model) {
+//        User user = userSecurityService.findByUsername(principal.getName());
+//        model.addAttribute("user", user);
+//        return "users";
+//    }
 
     @GetMapping(value = "/admin/users")
     public String printUsers(ModelMap model) {
@@ -57,7 +74,7 @@ public class UserController {
     @PostMapping(value = "/admin/users")
     public String saveNewUser(@ModelAttribute("user") User user) {
         userService.save(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
     @GetMapping(value = "/admin/{id}/edit")
@@ -69,13 +86,14 @@ public class UserController {
     @PostMapping(value = "/admin/users/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
         userService.update(id, user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
+
 
     @PostMapping(value = "/admin/{id}/delete")
     public String delete(@PathVariable("id") int id) {
         userService.delete(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
     @PostMapping(value = "/admin/delete")

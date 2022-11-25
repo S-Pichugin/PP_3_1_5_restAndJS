@@ -19,9 +19,13 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String username;
 
     private String surname;
+
+    private int age;
+
     private String email;
 
     private String password;
@@ -33,6 +37,14 @@ public class User implements UserDetails {
 
 
     public User() {
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public int getId() {
@@ -111,6 +123,7 @@ public class User implements UserDetails {
     public void setRole(Set<Role> roles) {
         this.roles = roles;
     }
+
     public void setRoles(String[] roles) {
         Set<Role> roleSet = new HashSet<>();
         for (String role : roles) {
