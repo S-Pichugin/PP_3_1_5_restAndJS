@@ -47,6 +47,8 @@ public class UserController {
     @GetMapping(value = "/admin")
     public String print(Principal principal,ModelMap model) {
         User user = userSecurityService.findByUsername(principal.getName());
+        User userEmpty = new User();
+        model.addAttribute("userEmpty", userEmpty);
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getAllUsers());
         return "users";
