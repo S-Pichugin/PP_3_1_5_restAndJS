@@ -11,4 +11,5 @@ public interface UserService {
     void update(int id, User updateUser);
     void delete(int id);
     User isExistById(User user);
+
 }

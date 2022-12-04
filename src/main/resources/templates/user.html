@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <style>
         .navbar-text#logoutBtn {
             --bs-btn-hover-color: #e3e2e2;
             --bs-btn-active-border-color: #343a40;
             --bs-btn-active-color: #e3e2e2;
         }
+
         body {
             background-color: #f8faf9;
         }
@@ -20,11 +22,7 @@
 <nav class="navbar navbar-dark" style="background-color: #343a40">
     <div class="container-fluid">
         <span class="navbar-brand">
-            <b th:text="${user.getEmail()}">Email</b>
-            with roles:
-            <span th:each="role : ${user.getAuthorities()}">
-                <span th:text="${#strings.substring(role.authority, 5)}"></span>
-            </span>
+            <b id="user_panel"></b>
         </span>
         <a th:href="@{/logout}" class="navbar-text btn" id="logoutBtn">Logout</a>
     </div>
@@ -34,7 +32,8 @@
         <!--Боковая панель ролей-->
         <div class="col-2 bg-white" style="height: 100vh">
             <div class="nav flex-column nav-pills mt-3">
-                <button class="nav-link text-start active" data-bs-toggle="tab" data-bs-target="#userPanel">User</button>
+                <button class="nav-link text-start active" data-bs-toggle="tab" data-bs-target="#userPanel">User
+                </button>
             </div>
         </div>
         <div class="col-10">
@@ -57,15 +56,8 @@
                                     <th scope="row">Role</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:text = "${user.id}" class="align-middle">ID</td>
-                                    <td th:text = "${user.username}" class="align-middle">Name</td>
-                                    <td th:text = "${user.surname}" class="align-middle">Surname</td>
-                                    <td th:text = "${user.age}" class="align-middle">Age</td>
-                                    <td th:text = "${user.email}" class="align-middle">Email</td>
-                                    <td th:utext="${user.getRoles()}"class="align-middle"></td>
-                                </tr>
+                                <tbody id="one_user">
+
                                 </tbody>
                             </table>
                         </div>
@@ -75,6 +67,9 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+<script src="/user.js"></script>
 </body>
 </html>
