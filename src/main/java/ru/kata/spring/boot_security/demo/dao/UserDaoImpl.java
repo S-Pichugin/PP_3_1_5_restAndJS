@@ -1,22 +1,22 @@
 package ru.kata.spring.boot_security.demo.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 
-@Component
+@Transactional
+@Repository
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private final EntityManager entityManager;
 
-    @Autowired
     public UserDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -27,8 +27,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void save(User user) {
+    public Object save(User user) {
         entityManager.persist(user);
+        return null;
     }
 
     @Override
@@ -70,5 +71,13 @@ public class UserDaoImpl implements UserDao {
             entityManager.remove(entityManager.merge(user));
         }
         return user;
+    }
+    public User findByUsername(String username){
+        return entityManager.createQuery("select u from User u where u.username = :username", User.class)
+                .setParameter("username", username).getSingleResult();
+    }
+    public User findByEmail(String email){
+        return entityManager.createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", email).getSingleResult();
     }
 }
